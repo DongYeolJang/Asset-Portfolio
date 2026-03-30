@@ -1618,19 +1618,32 @@ function closeResetModal(){
   document.body.style.overflow='';
 }
 function executeReset(){
+  // 1. 변수 초기화 (기본값으로 리셋)
+  txs=[];aI=[];aH=[];
+  bC={savings:[],deposit:[],invest:[],fixed:[{id:'fc1',name:'주거',amt:500000},{id:'fc2',name:'통신',amt:80000},{id:'fc3',name:'보험',amt:120000},{id:'fc4',name:'교통비',amt:100000},{id:'fc5',name:'구독',amt:30000}],variable:[{id:'vc1',name:'식비',amt:400000},{id:'vc2',name:'술',amt:100000},{id:'vc3',name:'품위유지비',amt:100000},{id:'vc4',name:'세금',amt:0},{id:'vc5',name:'문화/여가',amt:150000},{id:'vc6',name:'기타',amt:100000}]};
+  tC={income:[{id:'ic1',name:'급여',icon:'💰'},{id:'ic2',name:'상여금',icon:'🎁'},{id:'ic3',name:'사업수익',icon:'💼'},{id:'ic4',name:'아르바이트',icon:'🏃'},{id:'ic5',name:'용돈',icon:'💵'},{id:'ic6',name:'금융수입',icon:'📈'},{id:'ic7',name:'보험금',icon:'🛡'},{id:'ic8',name:'장학금',icon:'🎓'},{id:'ic9',name:'중고거래',icon:'♻️'}],fixed:[{id:'fc1',name:'주거',icon:'🏠'},{id:'fc2',name:'통신',icon:'📱'},{id:'fc3',name:'보험',icon:'🔒'},{id:'fc4',name:'교통비',icon:'🚌'},{id:'fc5',name:'구독',icon:'📺'}],variable:[{id:'vc1',name:'식비',icon:'🍽'},{id:'vc2',name:'술',icon:'🍺'},{id:'vc3',name:'품위유지비',icon:'👔'},{id:'vc4',name:'세금',icon:'📌'},{id:'vc5',name:'문화/여가',icon:'🎬'},{id:'vc6',name:'기타',icon:'📝'}],emergency:[{id:'em1',name:'축의금',icon:'💒'},{id:'em2',name:'조의금',icon:'🕯️'},{id:'em3',name:'선물',icon:'🎀'}],travel:[{id:'tr1',name:'숙박',icon:'🏨'},{id:'tr2',name:'항공권',icon:'✈'},{id:'tr3',name:'경비',icon:'💳'},{id:'tr4',name:'식비',icon:'🍜'}]};
+  fL={emergency:'',travel:''};
+  stocks=[];trades=[];alertSettings={up:0,down:0};alertLog=[];
+  cY=new Date().getFullYear();cM=new Date().getMonth();
+  avY=new Date().getFullYear();avM=new Date().getMonth();
+  aiY=new Date().getFullYear();aiM=new Date().getMonth();
+
+  // 2. localStorage 초기화
   localStorage.removeItem(LS);
   localStorage.removeItem('alert_last_check');
   localStorage.removeItem('fx_prev');
   localStorage.removeItem('fx_prev_date');
   localStorage.removeItem('gaegebu_helped');
   localStorage.removeItem('gaegebu_initialized');
-  localStorage.setItem('gaegebu_reset','1');
-  // 클라우드 데이터도 초기화
+
+  // 3. 클라우드 데이터 초기화
   if(currentUser){
     db.collection('users').doc(currentUser.uid).delete().catch(()=>{});
   }
+
+  // 4. 모달 닫고 앱 안에서 재렌더링 (로그인 화면으로 가지 않음)
   closeResetModal();
-  location.reload();
+  renderAll();
 }
 
 // ── 내역 수정 ──
